@@ -1,5 +1,6 @@
 using FunStudentCalendar.Data;
 using FunStudentCalendar.Models;
+using FunStudentCalendar.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,13 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultUI()
     .AddDefaultTokenProviders();
 builder.Services.AddControllersWithViews();
+
+
+builder.Services.AddTransient<CalendarApiService>(sp =>
+{
+    var credentials = builder.Configuration.GetSection("credential_details").ToString();
+    return new CalendarApiService(credentials);
+});
 
 var app = builder.Build();
 
